@@ -39,7 +39,7 @@ center = tk.Frame(root)
 root.state('zoomed')
 root.configure(bg='blue')
 center.place(relx=0.5, rely=0.5, anchor="n")
-root.iconphoto(False, icon)
+
 
 root.title("Media Downloader")
 entrylable = Label(center, text="Enter a URL: ", font="helvetica")
