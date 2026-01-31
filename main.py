@@ -13,7 +13,7 @@ def DownloadVideo():
         'outtmpl': f'{savedir}/%(title)s.%(ext)s',
         'format': 'bv*+ba/b',
         'merge_output_format': 'mp4',
-        'skip_unavailable_fragments': False,
+        'skip_unavailable_fragments': True,
         'extractor_args': {'youtube': {'player_client': ['windows']}},
     }
     try:
