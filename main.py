@@ -11,8 +11,10 @@ def DownloadVideo():
         return
     ydl_opts = {
         'outtmpl': f'{savedir}/%(title)s.%(ext)s',
-        'format': 'bv*+ba/b'
-        'skip_unavailable_fragments: False'
+        'format': 'bv*+ba/b',
+        'merge_output_format': 'mp4',
+        'skip_unavailable_fragments': False,
+        'extractor_args': {'youtube': {'player_client': ['windows']}},
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -24,8 +26,6 @@ def DownloadVideo():
     except Exception as e:
         messagebox.showerror(e)
 
-
-savedir = r"C:\Users\wredt\OneDrive\Videos\Videos"
 
 def openFileDialog():
     global savedir
