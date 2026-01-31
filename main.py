@@ -12,6 +12,7 @@ def DownloadVideo():
     ydl_opts = {
         'outtmpl': f'{savedir}/%(title)s.%(ext)s',
         'format': 'best'
+        'skip_unavailable_fragments: False'
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
