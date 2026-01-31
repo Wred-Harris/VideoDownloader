@@ -11,7 +11,7 @@ def DownloadVideo():
         return
     ydl_opts = {
         'outtmpl': f'{savedir}/%(title)s.%(ext)s',
-        'format': 'best'
+        'format': 'bv*+ba/b'
         'skip_unavailable_fragments: False'
     }
     try:
