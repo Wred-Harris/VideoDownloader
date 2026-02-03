@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import filedialog, messagebox
 import yt_dlp
-
+import sys
 
 def DownloadVideo():
     url = entry.get()
@@ -15,12 +15,13 @@ def DownloadVideo():
         'merge_output_format': 'mp4',
         'skip_unavailable_fragments': True,
         'extractor_args': {'youtube': {'player_client': ['windows']}},
+        'quiet': False,
     }
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-        messagebox.showinfo("Success", f"Downloaded successfully to {savedir}")
-        root.withdraw()
+            print("Starting download...")
+        print("Success", f"Downloaded successfully to {savedir}")
 
     
     except Exception as e:
@@ -33,14 +34,25 @@ def openFileDialog():
     if folder:
         savedir = folder
         browseBtn.config(text=savedir)
- 
+
+class ConsoleRedirect:
+    def __init__(self, widget):
+        self.widget = widget
+
+    def write(self, text):
+        self.widget.configure(state="normal")
+        self.widget.insert(tk.END, text)
+        self.widget.see(tk.END)
+        self.widget.configure(state="disabled")
+
+    def flush(self):
+        pass
+
 #UI Init
 root = tk.Tk()
 center = tk.Frame(root)
 root.state('zoomed')
-root.configure(bg='blue')
 center.place(relx=0.5, rely=0.5, anchor="n")
-
 
 root.title("Media Downloader")
 entrylable = Label(center, text="Enter a URL: ", font="helvetica")
@@ -56,13 +68,18 @@ downloadBtn = Button(center, text="Download Media", font='helvetica', command=Do
 downloadBtn.place(relx=0.5, rely=0.5, anchor='center')
 
 
+console = Text(root, height=10, width=60, state="disabled")
+console.pack(side=tk.TOP)
+sys.stdout = ConsoleRedirect(console)
+sys.stderr = ConsoleRedirect(console)
+
 entrylable.grid(row=0, column=0, pady=8)
 entry.grid(row=1, column=0, pady=8)
 browseBtn.grid(row=2, column=0, pady=8)
 downloadBtn.grid(row=3, column=0, pady=8)
 
 
-root.grid_columnconfigure(0, weight=1)
 
+root.grid_columnconfigure(0, weight=1)
 
 root.mainloop()
